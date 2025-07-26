@@ -51,6 +51,10 @@ A comprehensive web application built with Vue 3 (Nuxt 3) and Firebase that allo
 3. **Firebase Setup**
    - Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/)
    - Enable Authentication with Google Sign-In provider
+   - **IMPORTANT**: Add authorized domains for development:
+     - Go to Authentication > Settings > Authorized domains
+     - Add `localhost` and `localhost:3000` to the authorized domains list
+     - This is required to prevent `auth/unauthorized-domain` errors during development
    - Create a Firestore database
    - Copy your Firebase configuration
 
