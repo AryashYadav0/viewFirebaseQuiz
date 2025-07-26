@@ -63,21 +63,18 @@ export const useAuthStore = defineStore('auth', {
       
       try {
         // Try popup first
-        const result = await signInWithPopup(auth, provider)
+        const result = await signInWithPopup($firebase.auth, provider)
         this.user = result.user
-        this.isAuthenticated = true
       } catch (popupError: any) {
         // If popup is blocked, fall back to redirect
         if (popupError.code === 'auth/popup-blocked') {
           console.log('Popup blocked, using redirect method...')
-          await signInWithRedirect(auth, provider)
+          const { signInWithRedirect } = await import('firebase/auth')
+          await signInWithRedirect($firebase.auth, provider)
           // The redirect will handle the authentication
           return
-        }
+        console.error('Error signing in with Google:', popupError)
         throw popupError
-      } catch (error) {
-        console.error('Error signing in with Google:', error)
-        throw error
       }
     },
 
