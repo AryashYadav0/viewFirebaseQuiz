@@ -75,7 +75,6 @@ export const useAuthStore = defineStore('auth', {
           return
         }
         throw popupError
-      }
       } catch (error) {
         console.error('Error signing in with Google:', error)
         throw error
@@ -124,23 +123,23 @@ export const useAuthStore = defineStore('auth', {
         lastLogin: new Date(),
         createdAt: new Date()
       }, { merge: true })
+    },
+
+    async handleRedirectResult() {
+      if (!process.client) return
+      
+      try {
+        const { getAuth, getRedirectResult } = await import('firebase/auth')
+        const auth = getAuth()
+        const result = await getRedirectResult(auth)
+        
+        if (result) {
+          this.user = result.user
+          this.isAuthenticated = true
+        }
+      } catch (error: any) {
+        console.error('Error handling redirect result:', error)
+      }
     }
   }
-
-  async handleRedirectResult() {
-    if (!process.client) return
-    
-    try {
-      const { getAuth, getRedirectResult } = await import('firebase/auth')
-      const auth = getAuth()
-      const result = await getRedirectResult(auth)
-      
-      if (result) {
-        this.user = result.user
-        this.isAuthenticated = true
-      }
-    } catch (error: any) {
-      console.error('Error handling redirect result:', error)
-    }
-  },
 })
