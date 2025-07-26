@@ -73,6 +73,7 @@ export const useAuthStore = defineStore('auth', {
           await signInWithRedirect($firebase.auth, provider)
           // The redirect will handle the authentication
           return
+        }
         console.error('Error signing in with Google:', popupError)
         throw popupError
       }
